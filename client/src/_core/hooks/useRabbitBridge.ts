@@ -1,16 +1,19 @@
 /**
- * useRabbitBridge — Rabbit App Bridge authentication hook
+ * useRabbitBridge — Rabbit App Bridge authentication hook (v2.0)
  *
- * This hook handles communication with the Rabbit App via postMessage Bridge.
- * It replaces the old useWeb3Auth hook (MetaMask direct connection).
+ * Architecture:
+ *   - H5 (this code) runs inside Rabbit App's WebView
+ *   - Rabbit App holds the App-level signing private key
+ *   - H5 requests Rabbit App to generate signed headers for CEX API calls
+ *   - H5 also requests Rabbit App to sign SIWE messages for user login
  *
- * Flow:
- *   1. H5 sends "requestWalletAddress" to Rabbit App via postMessage
- *   2. Rabbit App returns the user's wallet address
- *   3. H5 calls CEX backend /api/web3/nonce with X-Rabbit-App-Token header
- *   4. H5 sends nonce to Rabbit App for signing
- *   5. Rabbit App signs and returns signature
- *   6. H5 calls CEX backend /api/web3/verify with X-Rabbit-App-Token header
+ * Login Flow:
+ *   1. H5 asks Rabbit App for user's wallet address
+ *   2. H5 asks Rabbit App to generate signed headers (timestamp + nonce + bodyHash)
+ *   3. H5 calls CEX /api/web3/nonce with signed headers → gets SIWE message
+ *   4. H5 asks Rabbit App to personal_sign the SIWE message (user confirms)
+ *   5. H5 asks Rabbit App to generate signed headers for verify request
+ *   6. H5 calls CEX /api/web3/verify with signed headers + SIWE signature
  *   7. Session cookie is set, user is authenticated
  */
 import { useState, useCallback, useEffect } from "react";
@@ -24,28 +27,20 @@ export type RabbitBridgeState =
   | { status: "success"; address: string }
   | { status: "error"; message: string };
 
-// The Rabbit App Token is embedded in the H5 bundle.
-// In production, this should be injected via environment variable at build time.
-const RABBIT_APP_TOKEN = (import.meta as any).env?.VITE_RABBIT_APP_TOKEN ?? "";
+// ── Bridge Communication ───────────────────────────────────────────────────
 
 /**
- * Build the sign message — must match server-side buildSignMessage exactly.
- */
-function buildSignMessage(address: string, nonce: string): string {
-  return `Welcome to WallDex Exchange!\n\nPlease sign this message to verify your wallet ownership.\n\nWallet: ${address}\nNonce: ${nonce}\n\nThis signature will not initiate any on-chain transaction or cost gas.`;
-}
-
-/**
- * Send a message to Rabbit App via postMessage Bridge.
- * Returns a Promise that resolves when Rabbit App responds.
+ * Send a message to Rabbit App via the appropriate bridge channel.
+ * Returns a promise that resolves with the App's response payload.
  */
 function sendToRabbit<T = any>(action: string, payload: Record<string, any> = {}): Promise<T> {
   return new Promise((resolve, reject) => {
     const messageId = `${action}_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+
     const timeout = setTimeout(() => {
       window.removeEventListener("message", handler);
       reject(new Error(`Rabbit Bridge timeout: ${action}`));
-    }, 30000); // 30s timeout for user interaction (signing)
+    }, 60000); // 60s timeout for user interaction (signing)
 
     function handler(event: MessageEvent) {
       const data = event.data;
@@ -61,7 +56,6 @@ function sendToRabbit<T = any>(action: string, payload: Record<string, any> = {}
 
     window.addEventListener("message", handler);
 
-    // Send to parent (Rabbit App WebView)
     const message = {
       source: "walldex-h5",
       messageId,
@@ -69,10 +63,8 @@ function sendToRabbit<T = any>(action: string, payload: Record<string, any> = {}
       payload,
     };
 
-    // In WebView, parent is the native app bridge
-    if (window.parent && window.parent !== window) {
-      window.parent.postMessage(message, "*");
-    } else if ((window as any).ReactNativeWebView) {
+    // Try multiple bridge channels
+    if ((window as any).ReactNativeWebView) {
       // React Native WebView bridge
       (window as any).ReactNativeWebView.postMessage(JSON.stringify(message));
     } else if ((window as any).webkit?.messageHandlers?.rabbitBridge) {
@@ -81,6 +73,9 @@ function sendToRabbit<T = any>(action: string, payload: Record<string, any> = {}
     } else if ((window as any).RabbitBridge) {
       // Android JSInterface bridge
       (window as any).RabbitBridge.postMessage(JSON.stringify(message));
+    } else if (window.parent && window.parent !== window) {
+      // iframe postMessage fallback
+      window.parent.postMessage(message, "*");
     } else {
       clearTimeout(timeout);
       window.removeEventListener("message", handler);
@@ -94,70 +89,106 @@ function sendToRabbit<T = any>(action: string, payload: Record<string, any> = {}
  */
 export function isInRabbitApp(): boolean {
   return Boolean(
-    (window.parent && window.parent !== window) ||
     (window as any).ReactNativeWebView ||
     (window as any).webkit?.messageHandlers?.rabbitBridge ||
-    (window as any).RabbitBridge
+    (window as any).RabbitBridge ||
+    (window.parent && window.parent !== window)
   );
 }
+
+// ── Types for Bridge Responses ─────────────────────────────────────────────
+
+interface SignedHeaders {
+  "x-rabbit-timestamp": string;
+  "x-rabbit-nonce": string;
+  "x-rabbit-signature": string;
+}
+
+// ── Main Hook ──────────────────────────────────────────────────────────────
 
 export function useRabbitBridge() {
   const [state, setState] = useState<RabbitBridgeState>({ status: "idle" });
 
   const connect = useCallback(async () => {
     setState({ status: "requesting_address" });
+
     try {
-      // 1. Request wallet address from Rabbit App
+      // Step 1: Get user's wallet address from Rabbit App
       const { address } = await sendToRabbit<{ address: string }>("getWalletAddress");
+
       if (!address || !/^0x[0-9a-fA-F]{40}$/.test(address)) {
         setState({ status: "error", message: "从 Rabbit 获取的钱包地址无效" });
         return;
       }
+
       const normalized = address.toLowerCase();
 
-      // 2. Fetch nonce from CEX backend (with Rabbit App Token)
+      // Step 2: Request Rabbit App to generate signed headers for nonce request
       setState({ status: "fetching_nonce" });
-      const nonceRes = await fetch(`/api/web3/nonce?address=${encodeURIComponent(normalized)}`, {
+
+      const nonceUrl = `/api/web3/nonce?address=${encodeURIComponent(normalized)}`;
+      const nonceHeaders = await sendToRabbit<SignedHeaders>("signRequest", {
+        method: "GET",
+        path: nonceUrl,
+        body: "",
+      });
+
+      // Step 3: Call CEX backend /api/web3/nonce with signed headers
+      const nonceRes = await fetch(nonceUrl, {
         headers: {
-          "X-Rabbit-App-Token": RABBIT_APP_TOKEN,
+          ...nonceHeaders,
         },
       });
+
       if (!nonceRes.ok) {
         const err = await nonceRes.json().catch(() => ({}));
-        setState({ status: "error", message: `获取 nonce 失败: ${err.error ?? nonceRes.statusText}` });
+        setState({ status: "error", message: `获取登录信息失败: ${err.error ?? nonceRes.statusText}` });
         return;
       }
-      const { nonce } = await nonceRes.json();
 
-      // 3. Request Rabbit App to sign the message
+      const { message: siweMessage } = await nonceRes.json();
+
+      // Step 4: Request Rabbit App to sign the SIWE message (user sees structured login info)
       setState({ status: "requesting_signature" });
-      const message = buildSignMessage(normalized, nonce);
-      const { signature } = await sendToRabbit<{ signature: string }>("signMessage", {
-        message,
+
+      const { signature } = await sendToRabbit<{ signature: string }>("personalSign", {
+        message: siweMessage,
         address: normalized,
       });
+
       if (!signature) {
-        setState({ status: "error", message: "签名失败：未获取到签名" });
+        setState({ status: "error", message: "用户取消了签名" });
         return;
       }
 
-      // 4. Verify signature on CEX backend (with Rabbit App Token)
+      // Step 5: Request Rabbit App to generate signed headers for verify request
       setState({ status: "verifying" });
+
+      const verifyBody = JSON.stringify({ message: siweMessage, signature });
+      const verifyHeaders = await sendToRabbit<SignedHeaders>("signRequest", {
+        method: "POST",
+        path: "/api/web3/verify",
+        body: verifyBody,
+      });
+
+      // Step 6: Call CEX backend /api/web3/verify with signed headers + SIWE signature
       const verifyRes = await fetch("/api/web3/verify", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-Rabbit-App-Token": RABBIT_APP_TOKEN,
+          ...verifyHeaders,
         },
-        body: JSON.stringify({ address: normalized, signature, nonce }),
+        body: verifyBody,
       });
+
       if (!verifyRes.ok) {
         const err = await verifyRes.json().catch(() => ({}));
-        setState({ status: "error", message: `验证失败: ${err.error ?? verifyRes.statusText}` });
+        setState({ status: "error", message: `登录验证失败: ${err.error ?? verifyRes.statusText}` });
         return;
       }
 
       setState({ status: "success", address: normalized });
+
       // Reload to refresh auth state
       window.location.href = "/";
     } catch (err: any) {
@@ -170,7 +201,6 @@ export function useRabbitBridge() {
   // Auto-connect when in Rabbit App environment
   useEffect(() => {
     if (isInRabbitApp() && state.status === "idle") {
-      // Small delay to let the bridge initialize
       const timer = setTimeout(() => connect(), 300);
       return () => clearTimeout(timer);
     }
