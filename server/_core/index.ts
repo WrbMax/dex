@@ -3,11 +3,8 @@ import express from "express";
 import { createServer } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
-// Removed: registerOAuthRoutes — OAuth login is no longer supported.
-// Only Rabbit Bridge authentication is allowed.
 import { registerWeb3AuthRoutes } from "../web3auth";
 import { registerWalletSyncRoutes } from "../walletSync";
-import { registerStorageProxy } from "./storageProxy";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
@@ -43,8 +40,7 @@ async function startServer() {
   app.use(express.json({ limit: "1mb" }));
   app.use(express.urlencoded({ limit: "1mb", extended: true }));
 
-  registerStorageProxy(app);
-  // Removed: registerOAuthRoutes(app) — OAuth login disabled
+  // Authentication routes (Rabbit Bridge + SIWE)
   registerWeb3AuthRoutes(app);
   registerWalletSyncRoutes(app);
 
@@ -64,7 +60,6 @@ async function startServer() {
   await ensureMarketsLoaded();
   const engine = await getMatchingEngine();
   const hub = getMarketDataHub();
-
   hub.on("ticker", (snap: { symbol: string; lastPrice: string }) => {
     void engine.onTicker(snap.symbol, snap.lastPrice);
   });

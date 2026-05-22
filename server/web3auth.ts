@@ -84,7 +84,7 @@ export async function upsertWeb3User(address: string) {
     return updated!;
   }
   // New user: create with wallet address as identity
-  const ownerRaw = process.env.OWNER_OPEN_ID || "";
+  const ownerRaw = process.env.OWNER_ADDRESS || "";
   const ownerAddr = ownerRaw.startsWith("web3:") ? ownerRaw.slice(5) : ownerRaw;
   const isOwner = normalized === normalizeAddress(ownerAddr);
   const role: "user" | "admin" = isOwner ? "admin" : "user";

@@ -1,10 +1,6 @@
 /**
- * Environment configuration. Values are read from process.env at import time
- * and coerced to sensible defaults so the app can still boot in dev without
- * every secret being set.
- *
- * All exchange-specific configuration lives under `ENV.exchange` to keep it
- * isolated from the core Manus framework variables.
+ * Environment configuration for WallDex Exchange.
+ * All values are read from process.env at import time.
  */
 function num(key: string, fallback: number): number {
   const raw = process.env[key];
@@ -12,6 +8,7 @@ function num(key: string, fallback: number): number {
   const n = Number(raw);
   return Number.isFinite(n) ? n : fallback;
 }
+
 function list(key: string, fallback: string[]): string[] {
   const raw = process.env[key];
   if (raw === undefined || raw === null) return fallback;
@@ -20,8 +17,10 @@ function list(key: string, fallback: string[]): string[] {
     .map((s) => s.trim())
     .filter(Boolean);
 }
+
 const isProduction = process.env.NODE_ENV === "production";
 const MIN_PRODUCTION_SECRET_LENGTH = 32;
+
 function assertProductionSecret(key: string, value: string | undefined) {
   if (!isProduction) return;
   if (!value || value.length < MIN_PRODUCTION_SECRET_LENGTH) {
@@ -30,23 +29,22 @@ function assertProductionSecret(key: string, value: string | undefined) {
     );
   }
 }
+
 assertProductionSecret("JWT_SECRET", process.env.JWT_SECRET);
-assertProductionSecret(
-  "API_KEY_ENCRYPTION_SECRET",
-  process.env.API_KEY_ENCRYPTION_SECRET || process.env.SESSION_SECRET || process.env.JWT_SECRET
-);
+
 export const ENV = {
-  appId: process.env.VITE_APP_ID ?? "",
+  /** Application identifier (used in JWT payload) */
+  appId: process.env.APP_ID ?? "walldex",
+  /** Secret for signing JWT session tokens */
   cookieSecret: process.env.JWT_SECRET ?? "",
+  /** Database connection URL */
   databaseUrl: process.env.DATABASE_URL ?? "",
-  oAuthServerUrl: process.env.OAUTH_SERVER_URL ?? "",
-  ownerOpenId: process.env.OWNER_OPEN_ID ?? "",
+  /** Owner wallet address — this address gets admin role on first login */
+  ownerAddress: process.env.OWNER_ADDRESS ?? "",
   isProduction,
-  forgeApiUrl: process.env.BUILT_IN_FORGE_API_URL ?? "",
-  forgeApiKey: process.env.BUILT_IN_FORGE_API_KEY ?? "",
-  /** Rabbit App Bridge: Public address of the App-level signing key (for dynamic signature verification). */
+  /** Rabbit App Bridge: Public address of the App-level signing key */
   rabbitAppAddress: process.env.RABBIT_APP_ADDRESS ?? "",
-  /** Rabbit App Bridge: Maximum timestamp skew in seconds (default: 60). */
+  /** Rabbit App Bridge: Maximum timestamp skew in seconds (default: 60) */
   rabbitMaxSkewSeconds: num("RABBIT_MAX_SKEW_SECONDS", 60),
   /** SIWE (EIP-4361) Configuration */
   siwe: {
