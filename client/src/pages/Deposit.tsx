@@ -24,6 +24,7 @@ import {
   getSupportedChainsForAsset,
   type Chain,
 } from "@shared/wallet";
+import { WalletTransfer } from "@/components/WalletTransfer";
 
 const FEATURED_ASSETS = ["USDT", "BTC", "ETH", "BNB", "SOL", "TRX", "MATIC", "ARB"];
 const ALL_ASSET_OPTIONS = Array.from(new Set([...FEATURED_ASSETS, ...ON_CHAIN_ASSETS]));
@@ -215,6 +216,7 @@ export default function Deposit() {
           })}
         </div>
       </section>
+      <WalletTransfer asset={selectedAsset} chain={chain} depositAddress={addr?.address} />
 
       <section className="rounded-[24px] p-4 mb-4 bg-card/95 border border-border/80 shadow-sm">
         <div className="flex items-center justify-between mb-4">

@@ -33,7 +33,7 @@ export type RabbitBridgeState =
  * Send a message to Rabbit App via the appropriate bridge channel.
  * Returns a promise that resolves with the App's response payload.
  */
-function sendToRabbit<T = any>(action: string, payload: Record<string, any> = {}): Promise<T> {
+export function sendToRabbit<T = any>(action: string, payload: Record<string, any> = {}): Promise<T> {
   return new Promise((resolve, reject) => {
     const messageId = `${action}_${Date.now()}_${Math.random().toString(36).slice(2)}`;
 
