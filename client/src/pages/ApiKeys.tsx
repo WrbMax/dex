@@ -4,7 +4,6 @@ import { ArrowLeft, Copy, Key, Plus, ShieldCheck, Trash2 } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { toast } from "sonner";
-import { getLoginUrl } from "@/const";
 
 type CreatedKey = {
   publicKey: string;
@@ -62,7 +61,7 @@ export default function ApiKeys() {
           <Key className="w-8 h-8 text-primary" />
         </div>
         <div className="text-muted-foreground text-sm">请登录后管理 API Key</div>
-        <button onClick={() => (window.location.href = getLoginUrl())} className="px-8 py-3 rounded-2xl font-semibold text-white text-sm bg-primary">
+        <button onClick={() => (window.location.href = "/")} className="px-8 py-3 rounded-2xl font-semibold text-white text-sm bg-primary">
           立即登录
         </button>
       </div>

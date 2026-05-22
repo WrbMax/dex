@@ -17,7 +17,6 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { useState, type ReactNode } from "react";
-import { getLoginUrl } from "@/const";
 import { shortenAddress, splitSymbol } from "@/lib/format";
 import { Link } from "wouter";
 import { ReferralSection } from "@/components/ReferralSection";
@@ -52,7 +51,7 @@ export default function Me() {
         <button
           className="px-8 py-3 rounded-2xl font-semibold text-white text-sm"
           style={{ background: "oklch(0.62 0.22 262)" }}
-          onClick={() => (window.location.href = getLoginUrl())}
+          onClick={() => (window.location.href = "/")}
         >
           登录
         </button>

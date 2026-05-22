@@ -46,7 +46,7 @@ export function useAuth(options?: UseAuthOptions) {
 
   const state = useMemo(() => {
     localStorage.setItem(
-      "manus-runtime-user-info",
+      "walldex-user-info",
       JSON.stringify(meQuery.data)
     );
     return {

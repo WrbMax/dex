@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
 import { ChevronLeft, TrendingUp, TrendingDown, RefreshCw } from "lucide-react";
 import { splitSymbol } from "@/lib/format";
 
@@ -43,7 +42,7 @@ export default function TradeHistory() {
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 px-4">
         <p className="text-muted-foreground text-sm">请先登录查看成交历史</p>
         <a
-          href={getLoginUrl()}
+          href="/"
           className="px-6 py-2 rounded-xl bg-blue-500/80 text-white text-sm font-medium"
         >
           立即登录
