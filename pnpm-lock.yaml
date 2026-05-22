@@ -245,9 +245,6 @@ importers:
         specifier: ^4.1.12
         version: 4.1.12
     devDependencies:
-      '@builder.io/vite-plugin-jsx-loc':
-        specifier: ^0.1.1
-        version: 0.1.1(vite@7.3.2(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(tsx@4.20.6))
       '@tailwindcss/typography':
         specifier: ^0.5.15
         version: 0.5.19(tailwindcss@4.1.14)
@@ -311,9 +308,6 @@ importers:
       vite:
         specifier: ^7.3.2
         version: 7.3.2(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(tsx@4.20.6)
-      vite-plugin-manus-runtime:
-        specifier: ^0.0.57
-        version: 0.0.57
       vitest:
         specifier: ^4.1.6
         version: 4.1.6(@types/node@24.7.0)(vite@7.3.2(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(tsx@4.20.6))
@@ -585,14 +579,6 @@ packages:
 
   '@braintree/sanitize-url@7.1.2':
     resolution: {integrity: sha512-jigsZK+sMF/cuiB7sERuo9V7N9jx+dhmHHnQyDSVdpZwVutaBu7WvNYqMDLSgFgfB30n452TP3vjDAvFC973mA==}
-
-  '@builder.io/jsx-loc-internals@0.0.1':
-    resolution: {integrity: sha512-cSADapVCi07DDhcuDmcAVItqSVmji7DNyD3xxYTHyNCwhWMNnTpZjyvDIWwYFJLleyDCJ9VUtbaXtUjjqBiRqw==}
-
-  '@builder.io/vite-plugin-jsx-loc@0.1.1':
-    resolution: {integrity: sha512-iAHFkaLBDJBC+EkGO1hF7hnIW2+oKKYVOl8NFAQH//3xeNEzvGdS9tOALRPR+JjR/M5NLyj+FG0VV7WFb1aJmw==}
-    peerDependencies:
-      vite: ^7.3.2
 
   '@chevrotain/cst-dts-gen@12.0.0':
     resolution: {integrity: sha512-fSL4KXjTl7cDgf0B5Rip9Q05BOrYvkJV/RrBTE/bKDN096E4hN/ySpcBK5B24T76dlQ2i32Zc3PAE27jFnFrKg==}
@@ -1112,9 +1098,6 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
-
-  '@medv/finder@4.0.2':
-    resolution: {integrity: sha512-RraNY9SCcx4KZV0Dh6BEW6XEW2swkqYca74pkFFRw6hHItSHiy+O/xMnpbofjYbzXj0tSpBGthUF1hHTsr3vIQ==}
 
   '@mermaid-js/parser@1.1.0':
     resolution: {integrity: sha512-gxK9ZX2+Fex5zu8LhRQoMeMPEHbc73UKZ0FQ54YrQtUxE1VVhMwzeNtKRPAu5aXks4FasbMe4xB4bWrmq6Jlxw==}
@@ -3128,9 +3111,6 @@ packages:
   estree-util-is-identifier-name@3.0.0:
     resolution: {integrity: sha512-hFtqIDZTIUZ9BXLb8y4pYGyk6+wekIivNVTcmvk8NoOh+VeRn5y6cEHzbURrWbfp1fIqdVipilzj+lfaadNZmg==}
 
-  estree-walker@2.0.2:
-    resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
-
   estree-walker@3.0.3:
     resolution: {integrity: sha512-7RUKfXgSMMkzt6ZuXmqapOurLGPPfgj6l9uRZ7lRGolvk0y2yocc35LdcxKC5PQZdn2DMqioAQ2NoWcrTKmm6g==}
 
@@ -3724,9 +3704,6 @@ packages:
 
   mitt@3.0.1:
     resolution: {integrity: sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==}
-
-  modern-screenshot@4.6.6:
-    resolution: {integrity: sha512-8tF0xEpe7yx37mK95UcIghSCWYeu628K2hLJl+ZNY2ANmRzYLlRLpquPHAQcL8keF6BoeEzTEw4GrgmUpGuZ8w==}
 
   motion-dom@12.23.21:
     resolution: {integrity: sha512-5xDXx/AbhrfgsQmSE7YESMn4Dpo6x5/DTZ4Iyy4xqDvVHWvFVoV+V2Ri2S/ksx+D40wrZ7gPYiMWshkdoqNgNQ==}
@@ -4352,9 +4329,6 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
-
-  vite-plugin-manus-runtime@0.0.57:
-    resolution: {integrity: sha512-AqJm43Mq/zA3nFdwRxAzsyXYy+YPPHa0oUPlWSge0f+zUBxKoDQj3kUB/61I1yEUD0ap7YSkRxmk09FCaSErtw==}
 
   vite@7.3.2:
     resolution: {integrity: sha512-Bby3NOsna2jsjfLVOHKes8sGwgl4TT0E6vvpYgnAYDIF/tie7MRaFthmKuHx1NSXjiTueXH3do80FMQgvEktRg==}
@@ -5129,17 +5103,6 @@ snapshots:
 
   '@braintree/sanitize-url@7.1.2': {}
 
-  '@builder.io/jsx-loc-internals@0.0.1':
-    dependencies:
-      '@babel/parser': 7.28.4
-      estree-walker: 2.0.2
-      magic-string: 0.30.19
-
-  '@builder.io/vite-plugin-jsx-loc@0.1.1(vite@7.3.2(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(tsx@4.20.6))':
-    dependencies:
-      '@builder.io/jsx-loc-internals': 0.0.1
-      vite: 7.3.2(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(tsx@4.20.6)
-
   '@chevrotain/cst-dts-gen@12.0.0':
     dependencies:
       '@chevrotain/gast': 12.0.0
@@ -5443,8 +5406,6 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
-
-  '@medv/finder@4.0.2': {}
 
   '@mermaid-js/parser@1.1.0':
     dependencies:
@@ -7571,8 +7532,6 @@ snapshots:
 
   estree-util-is-identifier-name@3.0.0: {}
 
-  estree-walker@2.0.2: {}
-
   estree-walker@3.0.3:
     dependencies:
       '@types/estree': 1.0.8
@@ -8413,8 +8372,6 @@ snapshots:
 
   mitt@3.0.1: {}
 
-  modern-screenshot@4.6.6: {}
-
   motion-dom@12.23.21:
     dependencies:
       motion-utils: 12.23.6
@@ -9126,16 +9083,6 @@ snapshots:
       - bufferutil
       - utf-8-validate
       - zod
-
-  vite-plugin-manus-runtime@0.0.57:
-    dependencies:
-      '@medv/finder': 4.0.2
-      clsx: 2.1.1
-      modern-screenshot: 4.6.6
-      nanoid: 5.1.6
-      react: 19.2.1
-      react-dom: 19.2.1(react@19.2.1)
-      tailwind-merge: 3.3.1
 
   vite@7.3.2(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(tsx@4.20.6):
     dependencies:
