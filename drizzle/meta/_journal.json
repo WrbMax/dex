@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1776761324902,
+      "tag": "0000_funny_squadron_sinister",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1776761581781,
+      "tag": "0001_stiff_miek",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1776780159676,
+      "tag": "0002_little_mystique",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1776781781728,
+      "tag": "0003_volatile_kree",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1776792105383,
+      "tag": "0004_careful_tattoo",
+      "breakpoints": true
+    }
+  ]
+}

@@ -1,0 +1,348 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-up: var(--up);
+  --color-down: var(--down);
+}
+
+/* ─── Light theme — Nexus H5 light mode ─────────────────────────────────── */
+:root {
+  --radius: 1rem;
+  --primary: oklch(0.60 0.22 262);
+  --primary-foreground: oklch(0.99 0 0);
+  --sidebar-primary: oklch(0.60 0.22 262);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --background: oklch(0.985 0.008 255);
+  --foreground: oklch(0.18 0.025 258);
+  --card: oklch(1 0 0 / 0.92);
+  --card-foreground: oklch(0.18 0.025 258);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.025 258);
+  --secondary: oklch(0.94 0.018 258);
+  --secondary-foreground: oklch(0.30 0.025 258);
+  --muted: oklch(0.94 0.016 258);
+  --muted-foreground: oklch(0.50 0.025 258);
+  --accent: oklch(0.91 0.040 258);
+  --accent-foreground: oklch(0.18 0.025 258);
+  --destructive: oklch(0.60 0.22 24);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.84 0.020 258 / 70%);
+  --input: oklch(0.84 0.020 258 / 60%);
+  --ring: oklch(0.60 0.22 262);
+  --chart-1: oklch(0.65 0.20 262);
+  --chart-2: oklch(0.58 0.18 190);
+  --chart-3: oklch(0.62 0.19 152);
+  --chart-4: oklch(0.68 0.18 40);
+  --chart-5: oklch(0.62 0.19 315);
+  --sidebar: oklch(0.97 0.010 255);
+  --sidebar-foreground: oklch(0.24 0.025 258);
+  --sidebar-accent: oklch(0.92 0.025 258);
+  --sidebar-accent-foreground: oklch(0.18 0.025 258);
+  --sidebar-border: oklch(0.84 0.020 258 / 70%);
+  --sidebar-ring: oklch(0.60 0.22 262);
+  --up: oklch(0.62 0.18 152);
+  --down: oklch(0.60 0.22 20);
+}
+
+/* ─── Dark (same palette, class applied immediately via HTML attribute) ───── */
+.dark {
+  --radius: 1rem;
+  --primary: oklch(0.62 0.22 262);
+  --primary-foreground: oklch(0.98 0 0);
+  --sidebar-primary: oklch(0.62 0.22 262);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --background: oklch(0.12 0.03 260);
+  --foreground: oklch(0.95 0.008 260);
+  --card: oklch(0.17 0.035 258);
+  --card-foreground: oklch(0.95 0.008 260);
+  --popover: oklch(0.17 0.035 258);
+  --popover-foreground: oklch(0.95 0.008 260);
+  --secondary: oklch(0.22 0.03 258);
+  --secondary-foreground: oklch(0.82 0.01 260);
+  --muted: oklch(0.20 0.03 258);
+  --muted-foreground: oklch(0.62 0.02 258);
+  --accent: oklch(0.26 0.06 258);
+  --accent-foreground: oklch(0.95 0.008 260);
+  --destructive: oklch(0.62 0.21 24);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(1 0 0 / 9%);
+  --input: oklch(1 0 0 / 13%);
+  --ring: oklch(0.62 0.22 262);
+  --chart-1: oklch(0.70 0.18 262);
+  --chart-2: oklch(0.58 0.20 262);
+  --chart-3: oklch(0.50 0.22 262);
+  --chart-4: oklch(0.40 0.20 262);
+  --chart-5: oklch(0.30 0.15 262);
+  --sidebar: oklch(0.14 0.03 260);
+  --sidebar-foreground: oklch(0.90 0.005 260);
+  --sidebar-accent: oklch(0.22 0.03 258);
+  --sidebar-accent-foreground: oklch(0.98 0 0);
+  --sidebar-border: oklch(1 0 0 / 9%);
+  --sidebar-ring: oklch(0.62 0.22 262);
+  --up: oklch(0.76 0.18 152);
+  --down: oklch(0.66 0.22 20);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html, body {
+    font-family: "Inter", system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: none;
+    background: #0c0e1a; /* default before stored theme is restored */
+    color: #f0f1f8;
+  }
+  body {
+    @apply bg-background text-foreground;
+    min-height: 100dvh;
+  }
+  /* Prevent iOS Safari auto-zoom when focusing inputs */
+  input, textarea, select {
+    font-size: 16px;
+  }
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background: transparent;
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  [type="reset"]:not(:disabled),
+  a[href],
+  select:not(:disabled),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled) {
+    @apply cursor-pointer;
+  }
+}
+
+@layer components {
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .flex {
+    min-height: 0;
+    min-width: 0;
+  }
+  @media (min-width: 640px) {
+    .container { padding-left: 1.5rem; padding-right: 1.5rem; }
+  }
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .nexus-glow-tl {
+    position: absolute;
+    top: -20%;
+    left: -20%;
+    width: 70%;
+    padding-bottom: 70%;
+    border-radius: 9999px;
+    background: radial-gradient(circle, oklch(0.62 0.22 262 / 0.14) 0%, transparent 65%);
+  }
+  .nexus-glow-br {
+    position: absolute;
+    right: -20%;
+    bottom: -20%;
+    width: 60%;
+    padding-bottom: 60%;
+    border-radius: 9999px;
+    background: radial-gradient(circle, oklch(0.55 0.22 300 / 0.12) 0%, transparent 65%);
+  }
+  :root:not(.dark) .nexus-glow-tl {
+    background: radial-gradient(circle, oklch(0.70 0.18 262 / 0.16) 0%, transparent 65%);
+  }
+  :root:not(.dark) .nexus-glow-br {
+    background: radial-gradient(circle, oklch(0.70 0.18 300 / 0.12) 0%, transparent 65%);
+  }
+  @media (min-width: 1024px) {
+    .container { padding-left: 2rem; padding-right: 2rem; max-width: 1280px; }
+  }
+
+  /* ── Nexus-style glass card ─────────────────────────────────────────────── */
+  .glass-card {
+    background: oklch(0.17 0.035 258 / 0.85);
+    border: 1px solid oklch(1 0 0 / 9%);
+    border-radius: 1.25rem;
+    backdrop-filter: blur(12px);
+  }
+
+  /* ── Theme-aware mobile surfaces and controls ────────────────────────────── */
+  .ui-surface {
+    background: oklch(1 0 0 / 0.86);
+    border: 1px solid oklch(0.84 0.020 258 / 72%);
+    box-shadow: 0 12px 30px oklch(0.40 0.06 258 / 0.08);
+    backdrop-filter: blur(12px);
+  }
+  .dark .ui-surface {
+    background: oklch(0.17 0.035 258 / 0.78);
+    border-color: oklch(1 0 0 / 9%);
+    box-shadow: none;
+  }
+  .ui-surface-soft {
+    background: oklch(0.96 0.014 258 / 0.90);
+    border: 1px solid oklch(0.84 0.020 258 / 66%);
+  }
+  .dark .ui-surface-soft {
+    background: oklch(0.22 0.03 258 / 0.62);
+    border-color: oklch(1 0 0 / 8%);
+  }
+  .ui-field {
+    background: oklch(1 0 0 / 0.92);
+    border: 1px solid oklch(0.82 0.024 258 / 78%);
+    color: var(--foreground);
+    box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.55);
+  }
+  .dark .ui-field {
+    background: oklch(0.22 0.03 258 / 0.88);
+    border-color: oklch(1 0 0 / 10%);
+    box-shadow: none;
+  }
+  .ui-field:focus-within {
+    border-color: color-mix(in oklab, var(--primary) 72%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 14%, transparent);
+  }
+  .ui-segment {
+    background: oklch(0.90 0.018 258 / 0.92);
+    border: 1px solid oklch(0.82 0.024 258 / 68%);
+  }
+  .dark .ui-segment {
+    background: oklch(0.17 0.035 258 / 0.62);
+    border-color: oklch(1 0 0 / 8%);
+  }
+  .ui-segment-option {
+    color: var(--muted-foreground);
+  }
+  .ui-segment-option:hover {
+    color: var(--foreground);
+    background: oklch(1 0 0 / 0.48);
+  }
+  .dark .ui-segment-option:hover {
+    background: oklch(1 0 0 / 0.06);
+  }
+  .ui-secondary-button {
+    background: oklch(0.96 0.014 258 / 0.95);
+    border: 1px solid oklch(0.82 0.024 258 / 72%);
+    color: var(--foreground);
+  }
+  .ui-secondary-button:hover {
+    border-color: color-mix(in oklab, var(--primary) 45%, var(--border));
+    color: var(--primary);
+  }
+  .dark .ui-secondary-button {
+    background: oklch(0.22 0.03 258 / 0.86);
+    border-color: oklch(1 0 0 / 10%);
+  }
+  .ui-info-panel {
+    background: color-mix(in oklab, var(--primary) 7%, white);
+    border: 1px solid color-mix(in oklab, var(--primary) 22%, transparent);
+  }
+  .dark .ui-info-panel {
+    background: oklch(0.22 0.06 262 / 0.30);
+    border-color: oklch(0.62 0.22 262 / 0.22);
+  }
+
+  /* ── Primary gradient button (matches Nexus "Get Started") ─────────────── */
+  .btn-primary-gradient {
+    background: linear-gradient(135deg, oklch(0.62 0.22 262), oklch(0.52 0.24 280));
+    color: oklch(0.98 0 0);
+    border-radius: 9999px;
+    font-weight: 600;
+    border: none;
+    transition: opacity 0.15s ease;
+  }
+  .btn-primary-gradient:hover { opacity: 0.88; }
+  .btn-primary-gradient:active { opacity: 0.75; }
+
+  /* ── Subtle glow orbs (background decoration) ───────────────────────────── */
+  .nexus-glow-tl {
+    position: absolute;
+    top: -15%;
+    left: -15%;
+    width: 55%;
+    padding-bottom: 55%;
+    border-radius: 9999px;
+    background: radial-gradient(circle, oklch(0.62 0.22 262 / 0.18) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .nexus-glow-br {
+    position: absolute;
+    bottom: -15%;
+    right: -15%;
+    width: 50%;
+    padding-bottom: 50%;
+    border-radius: 9999px;
+    background: radial-gradient(circle, oklch(0.55 0.22 300 / 0.15) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+@layer utilities {
+  .mono {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  .safe-top { padding-top: env(safe-area-inset-top); }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+  .tap-target { min-width: 44px; min-height: 44px; }
+  .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .bg-up\/15 { background-color: color-mix(in oklab, var(--up) 15%, transparent); }
+  .bg-down\/15 { background-color: color-mix(in oklab, var(--down) 15%, transparent); }
+  /* Gradient text utility */
+  .text-gradient {
+    background: linear-gradient(135deg, oklch(0.75 0.18 262), oklch(0.65 0.20 300));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}

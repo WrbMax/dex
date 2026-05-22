@@ -1,0 +1,19 @@
+{
+  "apps": [{
+    "name": "walldex",
+    "script": "/var/www/walldex/dist/index.js",
+    "cwd": "/var/www/walldex",
+    "env": {
+      "NODE_ENV": "production",
+      "PORT": "3002"
+    },
+    "env_file": "/var/www/walldex/.env",
+    "instances": 1,
+    "exec_mode": "fork",
+    "watch": false,
+    "max_memory_restart": "400M",
+    "error_file": "/var/log/walldex/error.log",
+    "out_file": "/var/log/walldex/out.log",
+    "log_date_format": "YYYY-MM-DD HH:mm:ss"
+  }]
+}

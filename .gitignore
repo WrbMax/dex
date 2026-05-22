@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+.vite/
+coverage/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Runtime logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local caches
+.cache/
+.tmp/
+tmp/
+.DS_Store
+
+# Generated test wallets / credentials
+importable_test_wallet_accounts_credentials.*
+importable_test_wallet_accounts_summary*.json
+test_admin_wallet_credentials.json
+test_admin_wallet_summary.json
+e2e_topup_balance_result.json
